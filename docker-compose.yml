@@ -31,7 +31,6 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
       - ./x-ui/db/:/etc/x-ui/
-      - ./x-ui/cert/:/root/cert/
     environment:
       XRAY_VMESS_AEAD_FORCED: "false"
     tty: true
