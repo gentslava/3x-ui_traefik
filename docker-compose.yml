@@ -7,6 +7,7 @@ services:
       - '--certificatesresolvers.letsencrypt.acme.email=${EMAIL}'
     environment:
       DOMAIN_NAME: ${DOMAIN_NAME}
+      SUBDOMAIN_POSTFIX: ${SUBDOMAIN_POSTFIX}
     healthcheck:
       test: ['CMD', 'traefik', 'healthcheck', '--ping']
     volumes:
@@ -39,7 +40,7 @@ services:
       - traefik.http.routers.3x-ui.entrypoints=websecure
       - traefik.http.routers.3x-ui.tls=true
       - traefik.http.routers.3x-ui.tls.certResolver=letsencrypt
-      - traefik.http.routers.3x-ui.rule=Host(`${VPN_SUBDOMAIN}.${DOMAIN_NAME}`)
+      - traefik.http.routers.3x-ui.rule=Host(`vpn${SUBDOMAIN_POSTFIX}.${DOMAIN_NAME}`)
       - traefik.http.services.3x-ui.loadbalancer.server.port=2053
 
       - traefik.tcp.routers.vless.rule=HostSNIRegexp(`^(.+\.)?google\.com$`)

@@ -1,7 +1,7 @@
 http:
   routers:
     traefik:
-      rule: Host(`traefik.{{ env "DOMAIN_NAME" }}`)
+      rule: Host(`traefik{{ env "SUBDOMAIN_POSTFIX" }}.{{ env "DOMAIN_NAME" }}`)
       service: api@internal
       middlewares:
       entryPoints:

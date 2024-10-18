@@ -22,7 +22,7 @@ The setup includes a combination of tools and services aimed at enhancing intern
    ```
 
 3. **Configuration**:
-   - Customize the `.env` file with your preferred environment variables such as domain, subdomain and email for acme challenge. Use `.env.dist` for template.
+   - Customize the `.env` file with your preferred environment variables such as domain, subdomain postfix (differnt countries code for example), email for acme challenge. Use `.env.dist` for template.
    - Modify the `docker-compose.yml` file if necessary to adjust volumes, ports, or other configurations.
 
 4. **Deploy Services**:
