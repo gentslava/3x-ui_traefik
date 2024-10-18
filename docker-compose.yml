@@ -2,9 +2,13 @@ services:
   traefik:
     image: traefik:latest
     container_name: traefik
+    command:
+      # Let's Encrypt
+      - '--certificatesresolvers.letsencrypt.acme.email=${EMAIL}'
     environment:
       DOMAIN_NAME: ${DOMAIN_NAME}
-      TRAEFIK_CERTIFICATESRESOLVERS_LETSENCRYPT_ACME_EMAIL: ${EMAIL}
+    healthcheck:
+      test: ['CMD', 'traefik', 'healthcheck', '--ping']
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/timezone:/etc/timezone:ro
