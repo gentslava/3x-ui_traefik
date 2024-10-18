@@ -28,7 +28,7 @@ The setup includes a combination of tools and services aimed at enhancing intern
 4. **Deploy Services**:
    ```bash
    cd 3x-ui_traefik
-   docker-compose up -d
+   docker compose up -d
    ```
 
 5. **Accessing Services**:
@@ -39,9 +39,9 @@ The setup includes a combination of tools and services aimed at enhancing intern
    - Pull the latest changes from this repository.
    - Recreate containers to apply changes:
      ```bash
-     docker-compose down
-     docker-compose pull
-     docker-compose up -d
+     docker compose down
+     docker compose pull
+     docker compose up -d
      ```
 
 **License:**
