@@ -1,0 +1,52 @@
+services:
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    environment:
+      DOMAIN_NAME: ${DOMAIN_NAME}
+      TRAEFIK_CERTIFICATESRESOLVERS_LETSENCRYPT_ACME_EMAIL: ${EMAIL}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./traefik/dynamic.yml:/etc/traefik/dynamic/dynamic.yml:ro
+      - ./traefik/acme.json:/acme.json
+      - ./traefik/access.log:/access.log
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - traefik
+    restart: unless-stopped
+
+  3x-ui:
+    image: ghcr.io/gentslava/3x-ui:v2.4.3
+    container_name: 3x-ui
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./x-ui/db/:/etc/x-ui/
+      - ./x-ui/cert/:/root/cert/
+    environment:
+      XRAY_VMESS_AEAD_FORCED: "false"
+    tty: true
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.3x-ui.entrypoints=websecure
+      - traefik.http.routers.3x-ui.tls=true
+      - traefik.http.routers.3x-ui.tls.certResolver=letsencrypt
+      - traefik.http.routers.3x-ui.rule=Host(`${VPN_SUBDOMAIN}.${DOMAIN_NAME}`)
+      - traefik.http.services.3x-ui.loadbalancer.server.port=2053
+
+      - traefik.tcp.routers.vless.rule=HostSNIRegexp(`^(.+\.)?google\.com$`)
+      - traefik.tcp.routers.vless.tls.passthrough=true
+      - traefik.tcp.routers.vless.service=vless-reality
+      - traefik.tcp.services.vless-reality.loadbalancer.server.port=443
+    networks:
+      - traefik
+    restart: unless-stopped
+
+networks:
+  traefik:
+    name: traefik_proxy

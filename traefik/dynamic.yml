@@ -1,0 +1,16 @@
+http:
+  routers:
+    traefik:
+      rule: Host(`traefik.{{ env "DOMAIN_NAME" }}`)
+      service: api@internal
+      middlewares:
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: letsencrypt
+
+  services:
+    api:
+      loadBalancer:
+        servers:
+          - url: http://traefik:8080

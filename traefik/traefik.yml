@@ -1,0 +1,43 @@
+log:
+  # Alternative logging level: DEBUG, INFO, WARN, ERROR, FATAL, PANIC
+  level: INFO
+
+global:
+  checkNewVersion: true
+  sendAnonymousUsage: false
+
+api:
+  dashboard: true
+
+accessLog:
+  filePath: /access.log
+
+entryPoints:
+  web:
+    address: :80
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+          permanent: false
+  websecure:
+    address: :443
+
+providers:
+  docker:
+    endpoint: unix:///var/run/docker.sock
+    defaultRule: Host(`{{ .ContainerName }}.{{ env "DOMAIN_NAME" }}`)
+    exposedByDefault: false
+    network: traefik_proxy
+  file:
+    directory: /etc/traefik/dynamic
+    watch: true
+    debugLogGeneratedTemplate: true
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      storage: /acme.json
+      httpChallenge:
+        entryPoint: web
