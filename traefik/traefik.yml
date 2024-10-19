@@ -23,6 +23,7 @@ entryPoints:
           permanent: false
   websecure:
     address: :443
+    http3: {}
 
 providers:
   docker:

@@ -20,7 +20,8 @@ services:
       - ./traefik/access.log:/access.log
     ports:
       - 80:80
-      - 443:443
+      - 443:443/tcp
+      - 443:443/udp
     networks:
       - traefik
     restart: unless-stopped
