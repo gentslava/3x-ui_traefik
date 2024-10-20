@@ -32,7 +32,10 @@ services:
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+      - ./x-ui/access.log/:/app/access.log
+      - ./x-ui/error.log/:/app/error.log
       - ./x-ui/db/:/etc/x-ui/
+      - ./traefik/access.log:/var/log/traefik/access.log:ro
     environment:
       XRAY_VMESS_AEAD_FORCED: "false"
     tty: true
