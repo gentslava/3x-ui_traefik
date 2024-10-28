@@ -19,15 +19,19 @@ The setup includes a combination of tools and services aimed at enhancing intern
 2. **Clone the Repository**:
    ```bash
    git clone https://github.com/gentslava/3x-ui_traefik.git
+   cd 3x-ui_traefik
    ```
 
 3. **Configuration**:
+   - Create `.env` and other files for properly work.
+     ```bash
+     bash init.sh
+     ```
    - Customize the `.env` file with your preferred environment variables such as domain, subdomain postfix (differnt countries code for example), email for acme challenge. Use `.env.dist` for template.
    - Modify the `docker-compose.yml` file if necessary to adjust volumes, ports, or other configurations.
 
 4. **Deploy Services**:
    ```bash
-   cd 3x-ui_traefik
    docker compose up -d
    ```
 
